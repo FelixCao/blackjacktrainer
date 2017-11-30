@@ -12,7 +12,7 @@ import java.util.List;
 public class Player {
 	List<Card> userHand = new ArrayList<Card>();
 	int usersScore=0;
-	
+	double money = 1000;
 
 //	List<Card> playerHand = new ArrayList<Card>();
 //	List<Card> dealerHand = new ArrayList<Card>();
@@ -61,6 +61,10 @@ public class Player {
 		userHand.add(mainDeck.getDeckofcards().get(itr));
 		itr++;
 		mainDeck.setPositonOfDeck(itr);
+	}
+
+	public void clearHand(){
+		userHand.clear();
 	}
 	
 	public int assignValue(Card acard){
