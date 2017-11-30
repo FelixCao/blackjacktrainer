@@ -12,7 +12,7 @@ import java.util.List;
 public class Player {
 	List<Card> userHand = new ArrayList<Card>();
 	int usersScore=0;
-	double money = 1000;
+	
 
 //	List<Card> playerHand = new ArrayList<Card>();
 //	List<Card> dealerHand = new ArrayList<Card>();
@@ -32,7 +32,14 @@ public class Player {
 	public void setUsersScore(int usersScore) {
 		this.usersScore = usersScore;
 	}
-
+	public void addUserScore(int money) {
+		this.setUsersScore(this.getUsersScore()+money);
+	}
+	
+	public void subUserScore(int money) {
+		this.setUsersScore(this.getUsersScore()-money);
+	}
+	
 	public void printHand(){										//Print User Hand
 		System.out.println(userHand);
 	}

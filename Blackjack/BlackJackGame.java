@@ -1,4 +1,5 @@
 package Blackjack;
+
 /*
  * Goals:
  * Create a BJ game that allows corrects for wrong move and counts cards
@@ -16,12 +17,16 @@ package Blackjack;
 
 //import java.util.ArrayList;
 //import java.util.List;
+
 import java.util.Scanner;
 
 public class BlackJackGame {
 	//(Use Dictionary for setting)?
-	Player dealer = new Player();
-	Player player1 = new Player();
+	public Player dealer = new Player();
+	public Player player1 = new Player();
+	public boolean continueGame =  true;
+	public  Deck gameDeck = new Deck();
+	public int bet=0;
 	
 	public BlackJackGame(){
 	//Initiate Black Jack Game
@@ -29,16 +34,17 @@ public class BlackJackGame {
 	// Create dealer and player
 	}
 	
+	
+	//TODO: Create Settings Options
 	public void initGame() {
-		
+		//Choose Start money
+		this.player1.setUsersScore(1000);
+		//Change game options
 	}
 	
 	
 	public void play() {
-		boolean continueGame =  true;
-		Deck gameDeck = new Deck();
 		System.out.println("Welcome");
-	//	BlackJackGame bjGame = new BlackJackGame();
 		Scanner read = new Scanner(System.in);
 
 		gameDeck.shuffleDeck();
@@ -46,10 +52,16 @@ public class BlackJackGame {
 		System.out.println("Welcome to Felix's BlackGame V0.3");
 		String nextAction = null;
 		
-		while(player1.money > 0 && continueGame) //While Player wants to play && has positive money
+		while(player1.getUsersScore() > 0 && continueGame) //While Player wants to play && has positive money
 		{
 		
-			//Make bet
+			//TODO: Make bet
+			System.out.println("How much do you want you want to bet?:");
+			bet = read.nextInt();
+			this.player1.subUserScore(bet);
+			
+			
+			
 			player1.dealCards(gameDeck, gameDeck.getPositonOfDeck());
 			player1.dealCards(gameDeck, gameDeck.getPositonOfDeck());
 			dealer.dealCards(gameDeck, gameDeck.getPositonOfDeck());
@@ -65,7 +77,7 @@ public class BlackJackGame {
 			
 	
 			//Play till fold or 21 or bust
-			while(player1.findValueofHand() < 21) {// || !nextAction.equals("f")) {
+			while(player1.findValueofHand() < 21) {
 				System.out.println("(H)it or (F)old?");
 				System.out.println(player1.findValueofHand());				
 				player1.printHand();
@@ -78,16 +90,17 @@ public class BlackJackGame {
 				else 
 					System.out.println("Please Enter Correct Value");
 			}
+			
 			if (player1.findValueofHand() > 21) {
 				System.out.println("Bust");
 				System.out.println(player1.findValueofHand());
-				player1.printHand();}
+				player1.printHand();
+			}
 	
 			else if(player1.findValueofHand() <= 21){
 						System.out.println("Dealer has to beat " + player1.findValueofHand());
-						System.out.print("Dealer has " );
-						//Dealer Flips over facedown Card
-						dealer.printHand(); 
+						System.out.print("Dealer has ");
+						dealer.printHand();  //Dealer Flips over face down Card
 			}
 			
 			//Dealer plays
@@ -98,7 +111,11 @@ public class BlackJackGame {
 				System.out.println(dealer.findValueofHand());
 			}
 			
+			//TODO: Money Awarded or Taken
 			this.decideWinner(dealer.findValueofHand(), player1.findValueofHand());//Decide Winner
+			
+			
+			
 			
 			
 			player1.clearHand();
@@ -111,10 +128,10 @@ public class BlackJackGame {
 			}
 			else 
 				continueGame = false;
-			// Change money
+			
 		}
 	System.out.println("GG");
-	System.out.println("You ended with :"+ player1.money + " dollars");
+	System.out.println("You ended with: "+ player1.usersScore + " dollars");
 	read.close();
 	}
 	
@@ -125,12 +142,14 @@ public class BlackJackGame {
 	public void decideWinner(int dealerScore, int playerScore) {
 		if(playerScore>dealerScore) {
 			System.out.println("You win this round");
+			this.player1.addUserScore(bet*2);
 		}
 		else if(playerScore < dealerScore) {
 			System.out.println("You lose this round");
 		}
 		else {
 			System.out.println("You tie this round");
+			this.player1.addUserScore(bet);
 		}
 	}
 
