@@ -37,19 +37,20 @@ public class BlackJackGame {
 	
 	//TODO: Create Settings Options
 	public void initGame() {
-		//Choose Start money
+		System.out.println("Welcome to Felix's BlackGame V0.3");
 		this.player1.setUsersScore(1000);
+		System.out.println("You have " + this.player1.getUsersScore()+ " dollars");
 		//Change game options
 	}
 	
 	
 	public void play() {
-		System.out.println("Welcome");
+
 		Scanner read = new Scanner(System.in);
 
 		gameDeck.shuffleDeck();
 		//gameDeck.printDeck();
-		System.out.println("Welcome to Felix's BlackGame V0.3");
+		
 		String nextAction = null;
 		
 		while(player1.getUsersScore() > 0 && continueGame) //While Player wants to play && has positive money
