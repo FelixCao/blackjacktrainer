@@ -5,7 +5,7 @@ import java.util.List;
 
 /*contains methods and variables related to blackjack player 
  * used for both dealer and players
- * Holds card value and money
+ * Holds card value
  * @TODO fix ACE to have both 1 and 11
  */
 
@@ -13,9 +13,6 @@ public class Player {
 	List<Card> userHand = new ArrayList<Card>();
 	int usersScore=0;
 	
-
-//	List<Card> playerHand = new ArrayList<Card>();
-//	List<Card> dealerHand = new ArrayList<Card>();
 
 	public List<Card> getUserHand() {
 		return userHand;
@@ -48,11 +45,16 @@ public class Player {
 	public int findValueofHand(){					//Return User Score
 		int sum = 0;
 		for(int i=0; i<this.userHand.size(); i++){
+			if(this.userHand.get(i).rank.equals("Ace")) {
+				
+			}
 			sum += assignValue(this.userHand.get(i));
 		//	System.out.println(hand.get(i).toString());
 		}		
 		return sum;
 	}
+	
+	
 	
 	
 	public void hit(Deck mainDeck, int itr){												//Add Card to UserHand

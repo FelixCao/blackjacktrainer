@@ -1,5 +1,4 @@
 package Blackjack;
-
 /*
  * Goals:
  * Create a BJ game that allows corrects for wrong move and counts cards
@@ -15,18 +14,29 @@ package Blackjack;
  * need option for card in play and outof play control
  */
 
+
+
+/* FEATURE BACKLOG
+ * 
+ * ACE Handling
+ * Doubling Down
+ * Insurance
+ * Unit Testing
+ * 
+ */
+
 //import java.util.ArrayList;
 //import java.util.List;
 
 import java.util.Scanner;
 
-public class BlackJackGame {
-	//(Use Dictionary for setting)?
+public class BlackJackGame {						
 	public Player dealer = new Player();
 	public Player player1 = new Player();
 	public boolean continueGame =  true;
 	public  Deck gameDeck = new Deck();
 	public int bet=0;
+	private int StartingMoney = 1000;
 	
 	public BlackJackGame(){
 	//Initiate Black Jack Game
@@ -38,30 +48,22 @@ public class BlackJackGame {
 	//TODO: Create Settings Options
 	public void initGame() {
 		System.out.println("Welcome to Felix's BlackGame V0.3");
-		this.player1.setUsersScore(1000);
-		System.out.println("You have " + this.player1.getUsersScore()+ " dollars");
-		//Change game options
+		this.player1.setUsersScore(StartingMoney);
 	}
 	
 	
-	public void play() {
-
+	public void play() throws InterruptedException {
 		Scanner read = new Scanner(System.in);
-
 		gameDeck.shuffleDeck();
 		//gameDeck.printDeck();
-		
 		String nextAction = null;
 		
-		while(player1.getUsersScore() > 0 && continueGame) //While Player wants to play && has positive money
-		{
-		
+		while(player1.getUsersScore() > 0 && continueGame){ //While Player wants to play && has positive money
 			//TODO: Make bet
+			System.out.println("You have " + this.player1.getUsersScore()+ " dollars");
 			System.out.println("How much do you want you want to bet?:");
 			bet = read.nextInt();
 			this.player1.subUserScore(bet);
-			
-			
 			
 			player1.dealCards(gameDeck, gameDeck.getPositonOfDeck());
 			player1.dealCards(gameDeck, gameDeck.getPositonOfDeck());
@@ -76,14 +78,14 @@ public class BlackJackGame {
 			System.out.println();
 			
 			
-	
 			//Play till fold or 21 or bust
 			while(player1.findValueofHand() < 21) {
 				System.out.println("(H)it or (F)old?");
-				System.out.println(player1.findValueofHand());				
-				player1.printHand();
+				//System.out.println(player1.findValueofHand());				
+				player1.printHand();	
 				//print card
-				nextAction = read.nextLine().toLowerCase();
+				nextAction = read.next().toLowerCase();
+				System.out.println("............");
 				if(nextAction.startsWith("h"))
 					player1.hit(gameDeck, gameDeck.getPositonOfDeck());
 				else if(nextAction.startsWith("f"))
@@ -105,8 +107,9 @@ public class BlackJackGame {
 			}
 			
 			//Dealer plays
-			while(dealer.findValueofHand() < 17) {
-				System.out.println("............");
+			while(dealer.findValueofHand() < 17 && player1.findValueofHand() <= 21) {
+			//	Thread.sleep(4000);
+				System.out.println("");
 				dealer.hit(gameDeck, gameDeck.getPositonOfDeck());
 				dealer.printHand();
 				System.out.println(dealer.findValueofHand());
@@ -117,16 +120,15 @@ public class BlackJackGame {
 			
 			
 			
-			
-			
 			player1.clearHand();
 			dealer.clearHand();
-			System.out.println("Continue Game?");
+			System.out.println("Continue Game? (y/n)");
 			System.out.println("=============");
-			nextAction = read.nextLine().toLowerCase();
+			nextAction = read.next().toLowerCase();
 			if(nextAction.startsWith("y")) {
 				continueGame = true;
 			}
+		
 			else 
 				continueGame = false;
 			
@@ -141,7 +143,15 @@ public class BlackJackGame {
 	
 	
 	public void decideWinner(int dealerScore, int playerScore) {
-		if(playerScore>dealerScore) {
+		if(playerScore >21) {
+			System.out.println("You lose this round");
+		}
+		else if(dealerScore >21 ) {
+			System.out.println("You win this round");
+			this.player1.addUserScore(bet*2);
+		}
+			
+		else if(playerScore>dealerScore) {
 			System.out.println("You win this round");
 			this.player1.addUserScore(bet*2);
 		}
@@ -153,13 +163,9 @@ public class BlackJackGame {
 			this.player1.addUserScore(bet);
 		}
 	}
-
-
 	
 	
-	
-	
-	public static void main(String[] args)
+	public static void main(String[] args) throws InterruptedException
 	{
 		BlackJackGame bj = new BlackJackGame();
 		bj.initGame();
