@@ -21,7 +21,7 @@ package Blackjack;
  * ACE Handling
  * Doubling Down
  * Insurance
- * Unit Testing
+ * Unit Testin
  * 
  */
 
