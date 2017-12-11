@@ -1,7 +1,7 @@
 package Blackjack;
 /*
  * Goals:
- * Create a BJ game that allows corrects for wrong move and counts cards
+ * Create a blackjack game that allows corrects for wrong move and counts cards
  * Reason:
  * To show my development as a programmer. Over time I will improve the code as i learn better programming practices
  * 
@@ -11,7 +11,8 @@ package Blackjack;
  * contains the rules of the game
  * and overall flow of the game
  * How money flows and is bet
- * need option for card in play and outof play control
+
+ * http://www.online-casinos.com/blackjack/blackjack_chart.asp
  */
 
 
@@ -20,10 +21,17 @@ package Blackjack;
  * 
  * 	Natural Aces
  * 	Doubling Down
- * 	Spliting Pairs
+ * 	Splitting Pairs
  * 	Insurance
+ *  Pretty Up I/O
+ *  Add Chart
+ *  card counting
  * 	Unit Testing
  * 	Itr at 45 needs shuffle
+ *  Play statistics
+ *  Auto play
+ *  settings
+ *   need option for card in play and outof play control
  * 
  * FINISHED FEATURES
  *  Ace Handling
@@ -39,9 +47,10 @@ public class BlackJackGame {
 	public Player dealer = new Player();
 	public Player player1 = new Player();
 	public boolean continueGame =  true;
+	public boolean continueRound = true;
 	public  Deck gameDeck = new Deck();
 	public int bet=0;
-	private int StartingMoney = 1000;
+	private int StartingMoney = 200;
 	
 	public BlackJackGame(){
 		int numberOfDecks;
@@ -67,6 +76,7 @@ public class BlackJackGame {
 		
 		while(player1.getUsersScore() > 0 && continueGame){ //While Player wants to play && has positive money
 			//TODO: Make bet
+			continueRound = true;
 			System.out.println("You have " + this.player1.getUsersScore()+ " dollars");
 			System.out.println("How much do you want you want to bet?:");
 			bet = read.nextInt();
@@ -85,9 +95,9 @@ public class BlackJackGame {
 			System.out.println();
 			
 			
-			//Play till fold or 21 or bust
-			while(player1.findValueofHand() < 21) {
-				System.out.println("(H)it or (F)old?");
+			//Play till fold or 21 or bustcontinueRound
+			while(player1.findValueofHand() < 21 && continueRound) {
+				System.out.println("(H)it or (F)old? or (D)ouble");
 				//System.out.println(player1.findValueofHand());				
 				player1.printHand();	
 				//print card
@@ -95,8 +105,14 @@ public class BlackJackGame {
 				System.out.println("............");
 				if(nextAction.startsWith("h"))
 					player1.hit(gameDeck, gameDeck.getPositonOfDeck());
+				else if(nextAction.startsWith("d")) {
+					player1.hit(gameDeck, gameDeck.getPositonOfDeck());
+					this.player1.subUserScore(bet);
+					bet += bet;
+					continueRound = false;
+				}
 				else if(nextAction.startsWith("f"))
-						break;
+					continueRound = false;
 				else 
 					System.out.println("Please Enter Correct Value");
 			}

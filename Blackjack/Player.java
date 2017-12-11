@@ -44,6 +44,7 @@ public class Player {
 	
 	//Can be cleaned?
 	public int findValueofHand(){					//Return User Score
+		hasAce = false;
 		int sum = 0;
 		for(int i=0; i<this.userHand.size(); i++){
 			if(this.userHand.get(i).rank.equals("Ace")) {
