@@ -16,12 +16,17 @@ package Blackjack;
 
 
 
-/* FEATURE BACKLOG
+/* FEATURE BACKLOG 
  * 
- * ACE Handling
- * Doubling Down
- * Insurance
- * Unit Testin
+ * 	Natural Aces
+ * 	Doubling Down
+ * 	Spliting Pairs
+ * 	Insurance
+ * 	Unit Testing
+ * 	Itr at 45 needs shuffle
+ * 
+ * FINISHED FEATURES
+ *  Ace Handling
  * 
  */
 
@@ -39,6 +44,8 @@ public class BlackJackGame {
 	private int StartingMoney = 1000;
 	
 	public BlackJackGame(){
+		int numberOfDecks;
+		
 	//Initiate Black Jack Game
 	//Allow user input for Setup
 	// Create dealer and player

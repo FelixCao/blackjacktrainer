@@ -12,6 +12,7 @@ import java.util.List;
 public class Player {
 	List<Card> userHand = new ArrayList<Card>();
 	int usersScore=0;
+	boolean hasAce = false;
 	
 
 	public List<Card> getUserHand() {
@@ -46,11 +47,14 @@ public class Player {
 		int sum = 0;
 		for(int i=0; i<this.userHand.size(); i++){
 			if(this.userHand.get(i).rank.equals("Ace")) {
-				
+				hasAce = true;
 			}
 			sum += assignValue(this.userHand.get(i));
 		//	System.out.println(hand.get(i).toString());
-		}		
+		}
+		if(sum+10<=21 && hasAce) {
+			sum+=10;
+		}
 		return sum;
 	}
 	
