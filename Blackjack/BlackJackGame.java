@@ -18,28 +18,28 @@ package Blackjack;
 
 
 /* FEATURE BACKLOG 
- * 
  * 	Natural Aces
- * 	Doubling Down
+ *  Doubling on Zero
+ *  Always can double
  * 	Splitting Pairs
+ *  Code Polish
  * 	Insurance
  *  Pretty Up I/O
  *  Add Chart
  *  card counting
  * 	Unit Testing
- * 	Itr at 45 needs shuffle
  *  Play statistics
  *  Auto play
  *  settings
- *   need option for card in play and outof play control
+ *  Smart Shuffling
+ *  need option for card in play and outof play control
  * 
  * FINISHED FEATURES
  *  Ace Handling
- * 
+ * 	Doubling Down
+ * 	Itr at 45 needs shuffle
  */
 
-//import java.util.ArrayList;
-//import java.util.List;
 
 import java.util.Scanner;
 
@@ -75,11 +75,23 @@ public class BlackJackGame {
 		String nextAction = null;
 		
 		while(player1.getUsersScore() > 0 && continueGame){ //While Player wants to play && has positive money
-			//TODO: Make bet
+			System.out.println(gameDeck.positonOfDeck);
+			if(gameDeck.getPositonOfDeck()>40) {
+				gameDeck.shuffleDeck();
+				gameDeck.setPositonOfDeck(0);
+				System.out.println("Shuffled ");
+			}
+			
+			//Make bet
 			continueRound = true;
 			System.out.println("You have " + this.player1.getUsersScore()+ " dollars");
 			System.out.println("How much do you want you want to bet?:");
+			//TODO Error catching for int?
 			bet = read.nextInt();
+			while(bet>this.player1.getUsersScore()) {
+				System.out.println("Not enough Money, reenter value");
+				bet = read.nextInt();
+			}
 			this.player1.subUserScore(bet);
 			
 			player1.dealCards(gameDeck, gameDeck.getPositonOfDeck());
@@ -131,7 +143,6 @@ public class BlackJackGame {
 			
 			//Dealer plays
 			while(dealer.findValueofHand() < 17 && player1.findValueofHand() <= 21) {
-			//	Thread.sleep(4000);
 				System.out.println("");
 				dealer.hit(gameDeck, gameDeck.getPositonOfDeck());
 				dealer.printHand();
@@ -145,16 +156,7 @@ public class BlackJackGame {
 			
 			player1.clearHand();
 			dealer.clearHand();
-			System.out.println("Continue Game? (y/n)");
-			System.out.println("=============");
-			nextAction = read.next().toLowerCase();
-			if(nextAction.startsWith("y")) {
-				continueGame = true;
-			}
-		
-			else 
-				continueGame = false;
-			
+			continueGame = decideContinue(read);
 		}
 	System.out.println("GG");
 	System.out.println("You ended with: "+ player1.usersScore + " dollars");
@@ -162,7 +164,20 @@ public class BlackJackGame {
 	}
 	
 	
-	
+	public boolean decideContinue(Scanner read) {
+		System.out.println("Continue Game? (y/n)");
+		System.out.println("=============");
+		String nextAction = read.next().toLowerCase();
+		if(nextAction.startsWith("y")) {
+			return  true;
+		}
+		else if(nextAction.startsWith("n"))
+			return  false;
+		else {
+			System.out.println("Enter Correct Value");
+			return decideContinue(read);
+		}
+	}
 	
 	
 	public void decideWinner(int dealerScore, int playerScore) {
